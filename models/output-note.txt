@@ -1,0 +1,4 @@
+Face: [ [ Negative confidence, Positive confidence, Doubt coefficient ] ]
+Eye: [ [ Negative A, Positive A, Positive B, Negative B ] ]
+Nose: [ [ Negative A, Positive A, Positive B, Negative B ] ]
+Mouth: [ [ Negative A, Thin, Medium, Medium thick, Thick, Negative B ] ]
