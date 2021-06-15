@@ -3,7 +3,7 @@ import json
 
 def json_request_compat(request, method="GET"):
     if request.content_type == 'application/json':
-        return json.load(request.body)
+        return json.loads(request.body)
 
     if method == "POST":
         return request.POST
