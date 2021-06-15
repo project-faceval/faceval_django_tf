@@ -1,9 +1,14 @@
+import base64
 import uuid
+from io import BytesIO
 from pathlib import Path
 import os
+
+import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
+from PIL import Image
 
 
 tmp_root = Path('/tmp/faceval-python/django/ml/').resolve()
@@ -13,15 +18,27 @@ def get_uuid():
     return str(uuid.uuid1())
 
 
-def decode_binary(binary_img, ext):
+def decode_base64(base64_str: str):
+    return BytesIO(base64.b64decode(base64_str))
+
+
+def decode_binary(binary_img, ext, use_base64: bool):
     file_path = tmp_root / f"{get_uuid()}.{ext}"
+
+    img = None
+
+    if use_base64:
+        img = Image.open(decode_base64(binary_img))
 
     if not tmp_root.exists():
         os.makedirs(tmp_root)
 
     with open(file_path, 'wb+') as f:
-        for chunk in binary_img.chunks():
-            f.write(chunk)
+        if img is not None:
+            img.save(f)
+        else:
+            for chunk in binary_img.chunks():
+                f.write(chunk)
 
     # img = cv.imread(str(file_path))
     img = img_to_array(load_img(file_path))
