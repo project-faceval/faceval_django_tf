@@ -7,6 +7,7 @@ from .rest.handlers import RestRequestHandler
 from .forms import PredicatedCandidateForm, PredicatedCandidateFormBase64
 from .scoring import scoring, read_pos_set, parts
 from .image_decoder import decode_binary
+from .utils import json_request_compat
 
 
 class FacialScoringViewSet(RestRequestHandler):
@@ -16,12 +17,15 @@ class FacialScoringViewSet(RestRequestHandler):
         return super().rest_view(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        use_base64 = request.POST.get('use_base64')
-        if use_base64 is not None and use_base64 == 'yes':
-            form = PredicatedCandidateFormBase64(request.POST)
-            use_base64 = True
+        params = json_request_compat(request, method='POST')
+
+        use_base64 = params.get('use_base64')
+        use_base64 = use_base64 is not None and use_base64 == 'yes'
+
+        if use_base64:
+            form = PredicatedCandidateFormBase64(params)
         else:
-            form = PredicatedCandidateForm(request.POST, request.FILES)
+            form = PredicatedCandidateForm(params, request.FILES)
 
         if not form.is_valid():
             return HttpResponse(status=http.client.BAD_REQUEST)

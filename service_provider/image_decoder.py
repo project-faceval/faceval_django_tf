@@ -36,6 +36,7 @@ def decode_binary(binary_img, ext, use_base64: bool):
     with open(file_path, 'wb+') as f:
         if img is not None:
             img.save(f)
+            img.close()
         else:
             for chunk in binary_img.chunks():
                 f.write(chunk)
