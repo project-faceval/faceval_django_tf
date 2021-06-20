@@ -1,15 +1,11 @@
 import base64
+import os
 import uuid
 from io import BytesIO
 from pathlib import Path
-import os
 
-import numpy as np
-import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from PIL import Image
-
+from tensorflow.keras.preprocessing.image import load_img, img_to_array
 
 tmp_root = Path('/tmp/faceval-python/django/ml/').resolve()
 

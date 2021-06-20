@@ -42,8 +42,8 @@ class FacialScoringViewSet(RestRequestHandler):
                 images[key].append(img[pos[1]:pos[1]+pos[3], pos[0]:pos[0]+pos[2]])
 
         return JsonResponse({
-            'face': scoring(images['face']),
-            'eye': scoring(images['eye'], detector='eye'),
-            'nose': scoring(images['nose'], detector='nose'),
-            'mouth': scoring(images['mouth'], detector='mouth'),
+            'face': scoring(images['face']) if len(images['face']) > 0 else [],
+            'eye': scoring(images['eye'], detector='eye') if len(images['eye']) > 0 else [],
+            'nose': scoring(images['nose'], detector='nose') if len(images['nose']) > 0 else [],
+            'mouth': scoring(images['mouth'], detector='mouth') if len(images['mouth']) > 0 else [],
         }, safe=False)
